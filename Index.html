@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BacII English — Practice Exams</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f4f0;--surface:#fff;--surface2:#f0efe9;--border:#e2e0d8;--text:#1c1b18;--muted:#7a7870;--ink:#2d2c29;--accent:#1a3a5c;--accent-lt:#e8edf3;--green:#1e6641;--green-lt:#e6f2ec;--red:#8b1f1f;--red-lt:#f5e6e6;--gold:#7a5c1e;--gold-lt:#f5f0e0;--shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);--shadow-lg:0 2px 8px rgba(0,0,0,.08),0 16px 40px rgba(0,0,0,.10);--r:4px;--r-lg:8px;}
+[data-theme="dark"]{--bg:#131210;--surface:#1c1b18;--surface2:#242320;--border:#2e2d29;--text:#ede9e0;--muted:#7a7870;--ink:#d4d0c4;--accent:#4a7fa8;--accent-lt:#1a2a38;--green:#3a9962;--green-lt:#0f2a1c;--red:#c24040;--red-lt:#2a0f0f;--gold:#b89040;--gold-lt:#2a2010;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;line-height:1.5;}
+button{font-family:'DM Sans',sans-serif;cursor:pointer;}
+textarea,input{font-family:'DM Sans',sans-serif;}
+
+.page{display:none;}
+.page.active{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* LANDING */
+.lhdr{border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:50;}
+.lhdr-in{max-width:1100px;margin:0 auto;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Instrument Serif',serif;font-size:1.25rem;color:var(--text);}
+.logo span{color:var(--accent);}
+.theme-btn{width:36px;height:36px;border:1px solid var(--border);background:var(--surface2);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.75rem;font-weight:700;transition:all .2s;}
+.theme-btn:hover{background:var(--border);color:var(--text);}
+.hero{max-width:1100px;margin:0 auto;padding:72px 32px 48px;}
+.hero-label{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);background:var(--accent-lt);padding:4px 12px;border-radius:var(--r);margin-bottom:20px;}
+.hero-title{font-family:'Instrument Serif',serif;font-size:clamp(2rem,5vw,3.25rem);line-height:1.15;color:var(--ink);max-width:560px;margin-bottom:14px;}
+.hero-sub{font-size:.92rem;color:var(--muted);max-width:460px;line-height:1.7;}
+.filter-bar{max-width:1100px;margin:0 auto;padding:0 32px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.filter-lbl{font-size:.75rem;font-weight:600;color:var(--muted);margin-right:4px;}
+.fbtn{padding:6px 14px;border:1px solid var(--border);background:var(--surface);border-radius:100px;font-size:.78rem;font-weight:500;color:var(--muted);transition:all .18s;}
+.fbtn:hover{border-color:var(--accent);color:var(--accent);}
+.fbtn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.exam-grid{max-width:1100px;margin:0 auto;padding:0 32px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;}
+.ecard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:26px;display:flex;flex-direction:column;gap:12px;transition:box-shadow .2s,transform .2s,border-color .2s;cursor:pointer;position:relative;overflow:hidden;}
+.ecard::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s ease;}
+.ecard:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);border-color:var(--accent);}
+.ecard:hover::after{transform:scaleX(1);}
+.ecard-year{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.ecard-title{font-family:'Instrument Serif',serif;font-size:1.2rem;line-height:1.3;color:var(--ink);}
+.ecard-meta{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{font-size:.72rem;font-weight:600;padding:3px 9px;border-radius:var(--r);background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+.chip.g{background:var(--gold-lt);color:var(--gold);border-color:transparent;}
+.ecard-desc{font-size:.82rem;color:var(--muted);line-height:1.6;}
+.ecard-cta{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:var(--accent);padding:8px 0;border-top:1px solid var(--border);}
+.ecard:hover .ecard-cta svg{transform:translateX(3px);}
+.ecard-cta svg{transition:transform .2s;}
+
+/* EXAM TOPBAR */
+.etop{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;}
+.etop-in{max-width:820px;margin:0 auto;padding:0 28px;height:56px;display:flex;align-items:center;gap:14px;}
+.back-btn{display:flex;align-items:center;gap:5px;font-size:.78rem;font-weight:600;color:var(--muted);background:none;border:none;padding:0;transition:color .2s;}
+.back-btn:hover{color:var(--text);}
+.etop-title{font-size:.85rem;font-weight:600;color:var(--ink);flex:1;text-align:center;}
+.timer{font-size:.85rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.5px;color:var(--muted);min-width:56px;text-align:right;transition:color .3s;}
+.timer.warn{color:var(--gold);}
+.timer.crit{color:var(--red);animation:blink .8s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.prog-bar{height:2px;background:var(--border);}
+.prog-fill{height:100%;background:var(--accent);width:0%;transition:width .5s ease;}
+
+/* TABS */
+.tabs-wrap{background:var(--surface);border-bottom:1px solid var(--border);}
+.tabs{max-width:820px;margin:0 auto;padding:0 28px;display:flex;overflow-x:auto;}
+.tab{padding:13px 18px;font-size:.78rem;font-weight:600;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;white-space:nowrap;transition:color .18s,border-color .18s;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--border);margin-left:5px;vertical-align:middle;transition:background .2s;}
+.tab.done .dot{background:var(--green);}
+.tab.active .dot{background:var(--accent);}
+
+/* EXAM BODY */
+.ebody{max-width:820px;margin:0 auto;padding:38px 28px 80px;}
+.pane{display:none;animation:fadeUp .25s ease;}
+.pane.active{display:block;}
+.eyebrow{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.pane-title{font-family:'Instrument Serif',serif;font-size:1.5rem;color:var(--ink);margin-bottom:4px;}
+.pane-instr{font-size:.84rem;color:var(--muted);margin-bottom:28px;line-height:1.65;}
+.divider{height:1px;background:var(--border);margin:24px 0;}
+
+/* WORD BANK */
+.bank-lbl{font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.wbank{display:flex;flex-wrap:wrap;gap:7px;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:22px;}
+.wpill{padding:5px 13px;border:1px solid var(--border);background:var(--surface);border-radius:100px;font-size:.8rem;font-weight:500;color:var(--ink);cursor:pointer;transition:all .15s;user-select:none;}
+.wpill:hover{border-color:var(--accent);color:var(--accent);}
+.wpill.selected{background:var(--accent);border-color:var(--accent);color:#fff;}
+.wpill.used{opacity:.32;pointer-events:none;text-decoration:line-through;}
+
+/* PASSAGE */
+.passage{font-family:'Instrument Serif',serif;font-size:.96rem;line-height:2.1;color:var(--ink);padding:22px 26px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);}
+.ptitle{font-size:1rem;font-weight:600;display:block;margin-bottom:12px;font-family:'DM Sans',sans-serif;}
+.bslot{display:inline-flex;align-items:baseline;}
+.bnum{font-size:.62rem;font-weight:700;color:var(--muted);vertical-align:super;margin-right:2px;font-family:'DM Sans',sans-serif;}
+.binp{width:108px;border:none;border-bottom:1.5px solid var(--accent);background:transparent;color:var(--accent);font-family:'Instrument Serif',serif;font-size:.92rem;padding:1px 5px;outline:none;text-align:center;cursor:pointer;transition:border-color .15s,color .15s;}
+.binp.correct{color:var(--green);border-bottom-color:var(--green);}
+.binp.wrong{color:var(--red);border-bottom-color:var(--red);}
+
+/* MCQ */
+.qblock{margin-bottom:26px;}
+.qrow{display:flex;gap:9px;margin-bottom:11px;align-items:flex-start;}
+.qidx{min-width:22px;height:22px;border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--muted);flex-shrink:0;margin-top:2px;}
+.qtxt{font-size:.88rem;line-height:1.65;color:var(--ink);}
+.opts{display:flex;flex-direction:column;gap:6px;}
+.olabel{display:flex;align-items:center;gap:9px;padding:9px 13px;border:1px solid var(--border);border-radius:var(--r);font-size:.84rem;color:var(--ink);cursor:pointer;transition:all .15s;background:var(--surface);user-select:none;}
+.olabel:hover{border-color:var(--accent);background:var(--accent-lt);}
+.olabel input{display:none;}
+.oltr{width:20px;height:20px;flex-shrink:0;border:1.5px solid var(--border);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:var(--muted);transition:all .15s;}
+.olabel.selected{border-color:var(--accent);background:var(--accent-lt);}
+.olabel.selected .oltr{background:var(--accent);border-color:var(--accent);color:#fff;}
+.olabel.correct{border-color:var(--green);background:var(--green-lt);}
+.olabel.correct .oltr{background:var(--green);border-color:var(--green);color:#fff;}
+.olabel.wrong{border-color:var(--red);background:var(--red-lt);}
+.olabel.wrong .oltr{background:var(--red);border-color:var(--red);color:#fff;}
+
+/* WRITING */
+.wprompt{padding:16px 18px;border-left:3px solid var(--accent);background:var(--accent-lt);border-radius:0 var(--r) var(--r) 0;margin-bottom:18px;font-size:.86rem;line-height:1.65;color:var(--ink);}
+.wprompt strong{display:block;margin-bottom:4px;font-size:.72rem;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);}
+.essay{width:100%;min-height:200px;border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;font-family:'Instrument Serif',serif;font-size:.95rem;line-height:1.8;color:var(--ink);background:var(--surface2);resize:vertical;outline:none;transition:border-color .2s,box-shadow .2s;}
+.essay:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,58,92,.07);}
+.wc-row{display:flex;justify-content:space-between;align-items:center;margin-top:7px;}
+.wc{font-size:.74rem;color:var(--muted);}
+.wc.ok{color:var(--green);}
+.rubric{margin-top:22px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
+.rubric-h{padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;}
+.rrow{display:flex;border-bottom:1px solid var(--border);font-size:.8rem;}
+.rrow:last-child{border-bottom:none;}
+.rcrit{flex:1;padding:9px 13px;color:var(--ink);font-weight:500;}
+.rpts{padding:9px 13px;color:var(--muted);border-left:1px solid var(--border);min-width:70px;text-align:center;}
+
+/* NAV */
+.enav{display:flex;justify-content:space-between;align-items:center;margin-top:40px;padding-top:26px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px;}
+.bg{padding:8px 18px;border:1px solid var(--border);background:var(--surface);border-radius:var(--r);font-size:.8rem;font-weight:600;color:var(--muted);transition:all .18s;}
+.bg:hover{border-color:var(--text);color:var(--text);}
+.bp{padding:8px 20px;background:var(--accent);border:1px solid var(--accent);border-radius:var(--r);font-size:.8rem;font-weight:600;color:#fff;transition:opacity .18s;}
+.bp:hover{opacity:.82;}
+.bs{padding:8px 20px;background:var(--ink);border:1px solid var(--ink);border-radius:var(--r);font-size:.8rem;font-weight:600;color:var(--bg);transition:opacity .18s;}
+.bs:hover{opacity:.8;}
+.br{padding:8px 18px;border:1px solid var(--border);background:var(--surface2);border-radius:var(--r);font-size:.8rem;font-weight:600;color:var(--muted);transition:all .18s;}
+.br:hover{border-color:var(--accent);color:var(--accent);}
+.bgroup{display:flex;gap:7px;}
+
+/* RESULTS */
+.rwrap{max-width:680px;margin:0 auto;padding:48px 28px 80px;}
+.rsrow{display:flex;align-items:flex-end;gap:14px;margin-bottom:8px;}
+.rbig{font-family:'Instrument Serif',serif;font-size:clamp(4rem,12vw,6rem);line-height:1;color:var(--ink);}
+.rmeta{padding-bottom:8px;}
+.rmax{font-size:.82rem;color:var(--muted);}
+.rgrade{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:var(--r);margin-bottom:5px;}
+.rgrade.ex{background:var(--green-lt);color:var(--green);}
+.rgrade.gd{background:var(--accent-lt);color:var(--accent);}
+.rgrade.av{background:var(--gold-lt);color:var(--gold);}
+.rgrade.lo{background:var(--red-lt);color:var(--red);}
+.rfeedback{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:32px;max-width:460px;}
+.btable{border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:28px;}
+.brow{display:flex;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border);font-size:.84rem;}
+.brow:last-child{border-bottom:none;}
+.bsect{flex:1;font-weight:500;color:var(--ink);}
+.bbwrap{flex:2;height:4px;background:var(--border);border-radius:2px;margin:0 14px;}
+.bbar{height:100%;background:var(--accent);border-radius:2px;transition:width 1s ease;}
+.bscore{font-weight:700;color:var(--accent);min-width:70px;text-align:right;}
+.ract{display:flex;gap:9px;flex-wrap:wrap;}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(20,18,14,.5);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;animation:fi .2s ease;}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);width:100%;max-width:560px;max-height:80vh;overflow-y:auto;animation:pi .25s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--shadow-lg);}
+@keyframes pi{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
+.mhead{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--surface);}
+.mhead h2{font-size:.92rem;font-weight:700;color:var(--ink);}
+.mclose{background:none;border:none;color:var(--muted);font-size:1.05rem;cursor:pointer;line-height:1;padding:2px;}
+.mclose:hover{color:var(--text);}
+.mbody{padding:18px 22px 26px;}
+.rsect{margin-bottom:18px;}
+.rsect-title{font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.rrow2{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:.81rem;}
+.rrow2:last-child{border-bottom:none;}
+.rlbl{color:var(--muted);}
+.rval{font-weight:600;color:var(--ink);}
+.chk.ok{color:var(--green);font-size:.73rem;font-weight:700;}
+.chk.ng{color:var(--red);font-size:.73rem;font-weight:700;}
+
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 20px;border-radius:var(--r);font-size:.8rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .25s;z-index:200;white-space:nowrap;}
+.toast.show{opacity:1;}
+
+@media(max-width:600px){
+  .hero,.filter-bar{padding-left:18px;padding-right:18px;}
+  .exam-grid{padding:0 18px 60px;}
+  .lhdr-in{padding:0 18px;}
+  .etop-in,.tabs,.ebody,.rwrap{padding-left:16px;padding-right:16px;}
+  .passage{padding:14px 14px;}
+  .bbwrap{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE: LANDING -->
+<div class="page active" id="page-landing">
+  <header class="lhdr">
+    <div class="lhdr-in">
+      <div class="logo">BacII <span>English</span></div>
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">AA</button>
+    </div>
+  </header>
+  <div class="hero">
+    <div class="hero-label">Cambodia National Exam Preparation</div>
+    <h1 class="hero-title">Practice Exams from Past Years</h1>
+    <p class="hero-sub">Select a year below to begin. Each exam is timed and includes Reading, Grammar, Vocabulary, and Writing.</p>
+  </div>
+  <div class="filter-bar">
+    <span class="filter-lbl">Year:</span>
+    <button class="fbtn active" onclick="filterExams('all',this)">All</button>
+    <button class="fbtn" onclick="filterExams('2023',this)">2023</button>
+    <button class="fbtn" onclick="filterExams('2022',this)">2022</button>
+    <button class="fbtn" onclick="filterExams('2021',this)">2021</button>
+    <button class="fbtn" onclick="filterExams('2020',this)">2020</button>
+  </div>
+  <div class="exam-grid" id="examGrid"></div>
+</div>
+
+<!-- PAGE: EXAM -->
+<div class="page" id="page-exam">
+  <div class="etop">
+    <div class="etop-in">
+      <button class="back-btn" onclick="goLanding()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        All Exams
+      </button>
+      <div class="etop-title" id="etopTitle">—</div>
+      <div class="timer" id="timerEl">45:00</div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+  </div>
+  <div class="tabs-wrap">
+    <div class="tabs">
+      <button class="tab active" id="tab-0" onclick="goSection(0)">Reading <span class="dot"></span></button>
+      <button class="tab" id="tab-1" onclick="goSection(1)">Grammar <span class="dot"></span></button>
+      <button class="tab" id="tab-2" onclick="goSection(2)">Vocabulary <span class="dot"></span></button>
+      <button class="tab" id="tab-3" onclick="goSection(3)">Writing <span class="dot"></span></button>
+    </div>
+  </div>
+  <div class="ebody">
+    <!-- Reading -->
+    <div class="pane active" id="pane-0">
+      <div class="eyebrow">Part 1</div>
+      <h2 class="pane-title">Reading Comprehension</h2>
+      <p class="pane-instr">Fill each blank with the correct word from the box. Click a word, then click a blank. Click a filled blank to remove it.</p>
+      <div class="bank-lbl">Word Bank</div>
+      <div class="wbank" id="wordBank"></div>
+      <div class="passage" id="passageEl"></div>
+      <div class="enav">
+        <div></div>
+        <div class="bgroup">
+          <button class="br" onclick="openReview()">Review</button>
+          <button class="bp" onclick="goSection(1)">Next: Grammar <svg width="11" height="11" viewBox="0 0 14 14" fill="none" style="margin-left:3px"><path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <!-- Grammar -->
+    <div class="pane" id="pane-1">
+      <div class="eyebrow">Part 2</div>
+      <h2 class="pane-title">Grammar</h2>
+      <p class="pane-instr">Choose the correct letter a, b, c, or d to complete each sentence.</p>
+      <div id="gramQs"></div>
+      <div class="enav">
+        <button class="bg" onclick="goSection(0)">Back</button>
+        <div class="bgroup">
+          <button class="br" onclick="openReview()">Review</button>
+          <button class="bp" onclick="goSection(2)">Next: Vocabulary <svg width="11" height="11" viewBox="0 0 14 14" fill="none" style="margin-left:3px"><path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <!-- Vocabulary -->
+    <div class="pane" id="pane-2">
+      <div class="eyebrow">Part 3</div>
+      <h2 class="pane-title">Vocabulary</h2>
+      <p class="pane-instr">Choose the best word or phrase to complete each sentence.</p>
+      <div id="vocabQs"></div>
+      <div class="enav">
+        <button class="bg" onclick="goSection(1)">Back</button>
+        <div class="bgroup">
+          <button class="br" onclick="openReview()">Review</button>
+          <button class="bp" onclick="goSection(3)">Next: Writing <svg width="11" height="11" viewBox="0 0 14 14" fill="none" style="margin-left:3px"><path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <!-- Writing -->
+    <div class="pane" id="pane-3">
+      <div class="eyebrow">Part 4</div>
+      <h2 class="pane-title">Writing</h2>
+      <p class="pane-instr">Write an essay of at least 80 words on the topic below. You will be evaluated on content relevance, grammar, vocabulary range, and word count.</p>
+      <div class="wprompt"><strong>Topic</strong><span id="wtopic">—</span></div>
+      <textarea class="essay" id="essayEl" placeholder="Write your essay here..." oninput="updateWC()"></textarea>
+      <div class="wc-row">
+        <div class="wc" id="wcEl">0 words</div>
+        <div style="font-size:.72rem;color:var(--muted)">Minimum 80 words</div>
+      </div>
+      <div class="rubric">
+        <div class="rubric-h">Scoring Guide</div>
+        <div class="rrow"><div class="rcrit">Relevance to topic and content quality</div><div class="rpts">4 pts</div></div>
+        <div class="rrow"><div class="rcrit">Grammar and sentence structure</div><div class="rpts">3 pts</div></div>
+        <div class="rrow"><div class="rcrit">Vocabulary range and accuracy</div><div class="rpts">2 pts</div></div>
+        <div class="rrow"><div class="rcrit">Word count (80 or more words)</div><div class="rpts">1 pt</div></div>
+      </div>
+      <div class="enav">
+        <button class="bg" onclick="goSection(2)">Back</button>
+        <div class="bgroup">
+          <button class="br" onclick="openReview()">Review</button>
+          <button class="bs" onclick="submitExam()">Submit Exam</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: RESULTS -->
+<div class="page" id="page-results">
+  <div class="etop">
+    <div class="etop-in">
+      <button class="back-btn" onclick="goLanding()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        All Exams
+      </button>
+      <div class="etop-title">Results</div>
+      <div></div>
+    </div>
+  </div>
+  <div class="rwrap">
+    <div class="rsrow">
+      <div class="rbig" id="rBig">0</div>
+      <div class="rmeta">
+        <div class="rgrade" id="rGrade">—</div>
+        <div class="rmax">out of 50 points</div>
+      </div>
+    </div>
+    <p class="rfeedback" id="rFeedback"></p>
+    <div class="btable" id="btable"></div>
+    <div class="ract">
+      <button class="bs" onclick="retake()">Retake Exam</button>
+      <button class="bg" onclick="goLanding()">Choose Another</button>
+      <button class="br" onclick="openReview()">Review Answers</button>
+    </div>
+  </div>
+</div>
+
+<!-- REVIEW OVERLAY -->
+<div class="overlay" id="rov" onclick="closeReview(event)">
+  <div class="modal">
+    <div class="mhead">
+      <h2>Answer Review</h2>
+      <button class="mclose" onclick="document.getElementById('rov').classList.remove('open')">&#x2715;</button>
+    </div>
+    <div class="mbody" id="rbody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const EXAMS=[{id:'e2023',year:'2023',title:'BacII English Exam 2023',duration:45,totalPts:50,desc:'A working life narrative, modal verbs, cost-of-living vocabulary, and a personal goals essay.',reading:{wordBank:['television','department','money','promoted','waitress','presenters','was','applied','few months','job'],passageTitle:'A Working Life',passage:['Well, I studied (0) ',{ex:'economics'},' at university, and then I was lucky because I got a ',{n:1,ans:'job'},' very quickly as an accountant in a local ',{n:2,ans:'department'},' store. It was not exactly what I wanted, but it was a very first job. I stayed there for four years altogether. After three years I was ',{n:3,ans:'promoted'},' to accounts manager, and I stayed in that job for a year, but then I really got bored, so I decided to leave and I ',{n:4,ans:'applied'},' for other jobs in the area. But I had no luck getting a second job at all, and I was very short of ',{n:5,ans:'money'},', so in the end I had to get a job working as a ',{n:6,ans:'waitress'},' in a restaurant. It was not very successful because I am quite clumsy. After a ',{n:7,ans:'few months'},' they gave me the sack. Then by chance an old friend who ',{n:8,ans:'was'},' at university with me was working in ',{n:9,ans:'television'},'. He got me a job as a researcher on a programme called Business Today. After a year they decided they wanted young ',{n:10,ans:'presenters'},' and I got the job. I love it.']},grammar:[{q:'Mr. Kimseng cannot talk on the phone because he ___ dinner right now.',opts:['mustn\'t','haven\'t to','haven\'t','is having'],ans:3},{q:'That little girl ___ for the last two days.',opts:['hasn\'t eaten','doesn\'t eat','isn\'t eating','has eaten'],ans:0},{q:'Several trees fell down last night ___ the strong wind.',opts:['because','so','since','because of'],ans:3},{q:'I hope you ___ us when you come here.',opts:['visited','would visit','visiting','will visit'],ans:3},{q:'If she does not do her homework, she ___ punished.',opts:['is','would be','will be','will have'],ans:2}],vocab:[{q:'I\'m really ___ of my child who got first prize in the art competition.',opts:['pleased','proud','happy','delighted'],ans:1},{q:'In recent years inflation has almost doubled the ___ of living.',opts:['cost','expense','charge','price'],ans:0},{q:'The restaurant services are bad, so we should write a ___ to the manager.',opts:['essay','message','complaint','information'],ans:2},{q:'The plane was delayed by fog, and so I ___ my connection.',opts:['lost','abandoned','forgot','missed'],ans:3},{q:'She went to the library to ___.',opts:['borrow a book','lend a book','let a book','hire a book'],ans:0}],writingTopic:'"Your goal in the future" — Write about your future career, personal ambitions, or the kind of life you hope to lead. Describe why these goals matter to you and how you plan to achieve them.',writingKey:['goal','future','want','plan','career','study','university','work','hope','dream','achieve','become','important','life','education','ambition','success','job','family','country']},{id:'e2022',year:'2022',title:'BacII English Exam 2022',duration:45,totalPts:50,desc:'Environmental issues passage, conditional sentences, science and health vocabulary, and a persuasive writing task.',reading:{wordBank:['pollution','factories','reduce','effects','harmful','climate','recycling','environment','energy','solutions'],passageTitle:'Protecting Our Planet',passage:['Today, (0) ',{ex:'scientists'},' warn that our planet faces serious problems. One of the biggest issues is air ',{n:1,ans:'pollution'},', which comes mainly from cars and ',{n:2,ans:'factories'},'. These release gases that are ',{n:3,ans:'harmful'},' to both humans and nature. Scientists say that ',{n:4,ans:'climate'},' change is accelerating, causing floods and droughts. The good news is that people are finding ',{n:5,ans:'solutions'},'. For example, many countries are investing in renewable ',{n:6,ans:'energy'},' sources such as solar and wind power. Governments are also encouraging ',{n:7,ans:'recycling'},' to cut down on waste. Citizens can also help to ',{n:8,ans:'reduce'},' their carbon footprint by using public transport. Protecting the ',{n:9,ans:'environment'},' is everyone\'s responsibility. The long-term ',{n:10,ans:'effects'},' of our choices today will be felt by future generations.']},grammar:[{q:'If we ___ more trees, the air would be cleaner.',opts:['plant','planted','will plant','had planted'],ans:1},{q:'The students ___ the test by the time the teacher arrived.',opts:['finish','finished','had finished','were finishing'],ans:2},{q:'She asked me ___ I had seen her book.',opts:['if','that','what','which'],ans:0},{q:'They ___ in this city since 2010.',opts:['live','lived','are living','have lived'],ans:3},{q:'Despite ___ hard, he failed the exam.',opts:['study','studied','studying','to study'],ans:2}],vocab:[{q:'The doctor advised her to ___ smoking immediately.',opts:['give up','give in','give out','give away'],ans:0},{q:'The scientist made a remarkable ___ that changed medicine forever.',opts:['invention','discovery','creation','finding'],ans:1},{q:'The new policy will ___ working conditions for all employees.',opts:['improve','increase','rise','raise'],ans:0},{q:'We must ___ energy to protect the environment.',opts:['preserve','protect','conserve','maintain'],ans:2},{q:'The children were ___ when they heard they had won the competition.',opts:['exciting','excited','excite','excitement'],ans:1}],writingTopic:'"How can young people help protect the environment?" — Write about practical actions that students and young people can take to reduce pollution and protect nature. Give at least two specific examples and explain why they are effective.',writingKey:['environment','pollution','reduce','recycle','energy','plant','save','protect','climate','waste','transport','school','action','future','young','tree','water','electricity','community','change']},{id:'e2021',year:'2021',title:'BacII English Exam 2021',duration:45,totalPts:50,desc:'Technology and society passage, passive voice and reported speech, communication vocabulary, and an opinion essay.',reading:{wordBank:['internet','smartphone','connected','digital','skills','information','social','access','communication','modern'],passageTitle:'Technology in Daily Life',passage:['In the (0) ',{ex:'twenty-first'},' century, technology has transformed the way we live. The ',{n:1,ans:'internet'},' has changed how people work, study, and communicate. Today, almost everyone owns a ',{n:2,ans:'smartphone'},', which keeps them ',{n:3,ans:'connected'},' at all times. We live in a ',{n:4,ans:'digital'},' age where finding ',{n:5,ans:'information'},' takes only a few seconds. ',{n:6,ans:'social'},' media platforms allow people around the world to share ideas instantly. However, not everyone has equal ',{n:7,ans:'access'},' to these technologies. Educators agree that ',{n:8,ans:'communication'},' and ',{n:9,ans:'skills'},' are now essential in ',{n:10,ans:'modern'},' society, as important as reading and writing.']},grammar:[{q:'The letter ___ yesterday by the secretary.',opts:['was sent','sent','is sent','has sent'],ans:0},{q:'He told me that he ___ tired.',opts:['is','was','were','has been'],ans:1},{q:'Neither the students nor the teacher ___ ready yet.',opts:['are','is','were','have'],ans:1},{q:'She suggested ___ a picnic at the weekend.',opts:['have','to have','having','had'],ans:2},{q:'___ he works hard, he never gets good results.',opts:['Although','Because','Since','So'],ans:0}],vocab:[{q:'The new hospital was built to ___ the needs of the local community.',opts:['meet','fill','serve','answer'],ans:0},{q:'It is important to ___ between facts and opinions.',opts:['distinguish','decide','separate','differ'],ans:0},{q:'The manager ___ the meeting until the following week.',opts:['delayed','postponed','stopped','cancelled'],ans:1},{q:'She has a natural ___ for learning languages.',opts:['ability','talent','gift','skill'],ans:2},{q:'The prime minister\'s speech had a great ___ on public opinion.',opts:['effect','affect','result','impact'],ans:3}],writingTopic:'"The advantages and disadvantages of technology" — Discuss the benefits and drawbacks of modern technology in everyday life. Support your arguments with clear examples and give your overall opinion.',writingKey:['technology','internet','advantage','disadvantage','benefit','communication','social','problem','modern','smartphone','education','health','connect','difficult','easy','time','information','people','use','device']},{id:'e2020',year:'2020',title:'BacII English Exam 2020',duration:45,totalPts:50,desc:'Cambodian culture and tourism passage, question tags and comparatives, travel vocabulary, and a descriptive essay.',reading:{wordBank:['tourists','heritage','ancient','kingdom','culture','temples','beautiful','attract','history','traditional'],passageTitle:'Cambodia: A Land of Wonders',passage:['Cambodia is a country with a rich and proud (0) ',{ex:'past'},'. It was once the heart of the Khmer ',{n:1,ans:'kingdom'},', one of the most powerful in Southeast Asia. The country is famous for its ',{n:2,ans:'ancient'},' monuments, especially the ',{n:3,ans:'temples'},' of Angkor Wat. These sites are a UNESCO World ',{n:4,ans:'heritage'},' treasure and ',{n:5,ans:'attract'},' millions of ',{n:6,ans:'tourists'},' every year. Cambodia\'s ',{n:7,ans:'culture'},' is deeply rooted in Buddhism, which shapes the country\'s ',{n:8,ans:'traditional'},' values and festivals. The landscapes are ',{n:9,ans:'beautiful'},', from the jungles to the coastline. Understanding Cambodia\'s ',{n:10,ans:'history'},' helps visitors appreciate its spirit and resilience.']},grammar:[{q:'Angkor Wat is ___ monument in Cambodia.',opts:['the most famous','the more famous','the famous','most famous'],ans:0},{q:'The weather in Phnom Penh is ___ than in Siem Reap.',opts:['hot','hotter','more hot','the hottest'],ans:1},{q:'You had better ___ an umbrella; it looks like rain.',opts:['take','taking','to take','took'],ans:0},{q:'The tourists ___ the temple when it started raining.',opts:['visit','are visiting','were visiting','have visited'],ans:2},{q:'It is time the government ___ more about tourism.',opts:['did','does','do','doing'],ans:0}],vocab:[{q:'The guide ___ the tourists around the temple complex.',opts:['led','guided','took','brought'],ans:1},{q:'Angkor Wat is considered a ___ of Khmer architecture.',opts:['masterpiece','artwork','creation','design'],ans:0},{q:'The festival ___ place every year in April.',opts:['takes','makes','does','has'],ans:0},{q:'She looked ___ when she saw the sunrise over Angkor Wat.',opts:['amazed','amazement','amazing','amaze'],ans:0},{q:'Many young Cambodians want to ___ their country\'s traditions.',opts:['preserve','conserve','keep','maintain'],ans:0}],writingTopic:'"Describe a place in Cambodia that you find beautiful or interesting." — Choose one specific place in Cambodia. Describe what it looks like, why it is special, and why you would recommend others to visit it.',writingKey:['Cambodia','Angkor','temple','beautiful','visit','culture','history','people','traditional','river','Phnom','Siem','heritage','mountain','coast','Buddhist','Khmer','place','recommend','describe']}];
+
+let CX=null,CS=0,TI=null,TL=0,DONE=false,SW=null,BA={},MA={},ET='';
+function renderLanding(f){const g=document.getElementById('examGrid');g.innerHTML='';(f==='all'?EXAMS:EXAMS.filter(e=>e.year===f)).forEach(ex=>{const c=document.createElement('div');c.className='ecard';c.setAttribute('data-year',ex.year);c.innerHTML='<div class="ecard-year">'+ex.year+'</div><div class="ecard-title">'+ex.title+'</div><div class="ecard-meta"><span class="chip">'+ex.duration+' min</span><span class="chip g">'+ex.totalPts+' pts</span><span class="chip">4 sections</span></div><div class="ecard-desc">'+ex.desc+'</div><div class="ecard-cta">Start Exam <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';c.onclick=()=>startExam(ex);g.appendChild(c);});}
+function filterExams(y,b){document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderLanding(y);}
+renderLanding('all');
+
+function startExam(ex){CX=ex;DONE=false;BA={};MA={};ET='';SW=null;CS=0;TL=ex.duration*60;
+document.getElementById('etopTitle').textContent=ex.title;
+document.getElementById('wtopic').textContent=ex.writingTopic;
+buildBank();buildPassage();buildMCQ('gramQs',ex.grammar,'g');buildMCQ('vocabQs',ex.vocab,'v');
+document.getElementById('essayEl').value='';updateWC();
+goSection(0,true);showPage('page-exam');startTimer();updateProg();}
+
+function buildBank(){const b=document.getElementById('wordBank');b.innerHTML='';CX.reading.wordBank.forEach(w=>{const p=document.createElement('div');p.className='wpill';p.textContent=w;p.onclick=()=>selPill(p,w);b.appendChild(p);});}
+function buildPassage(){const pe=document.getElementById('passageEl');pe.innerHTML='<span class="ptitle">'+CX.reading.passageTitle+'</span>';CX.reading.passage.forEach(s=>{if(typeof s==='string'){pe.appendChild(document.createTextNode(s));}else if(s.ex){const sp=document.createElement('strong');sp.textContent=s.ex;pe.appendChild(sp);}else{const slot=document.createElement('span');slot.className='bslot';const num=document.createElement('span');num.className='bnum';num.textContent='('+s.n+')';const inp=document.createElement('input');inp.type='text';inp.className='binp';inp.readOnly=true;inp.placeholder='___';inp.dataset.n=s.n;inp.dataset.ans=s.ans;inp.onclick=()=>clickBlank(inp);slot.appendChild(num);slot.appendChild(inp);pe.appendChild(slot);}});}
+function selPill(p,w){if(p.classList.contains('used'))return;if(SW&&SW.p===p){p.classList.remove('selected');SW=null;return;}document.querySelectorAll('.wpill').forEach(x=>x.classList.remove('selected'));p.classList.add('selected');SW={p,w};toast('Click a blank to place this word');}
+function clickBlank(inp){if(DONE)return;const n=parseInt(inp.dataset.n);if(inp.value){const old=inp.value;inp.value='';delete BA[n];document.querySelectorAll('.wpill').forEach(x=>{if(x.textContent===old)x.classList.remove('used');});updateProg();return;}if(!SW){toast('Select a word from the bank first');return;}inp.value=SW.w;BA[n]=SW.w;SW.p.classList.remove('selected');SW.p.classList.add('used');SW=null;updateProg();}
+function buildMCQ(cid,qs,pf){const c=document.getElementById(cid);c.innerHTML='';qs.forEach((q,i)=>{const k=pf+i;const b=document.createElement('div');b.className='qblock';b.innerHTML='<div class="qrow"><div class="qidx">'+(i+1)+'</div><div class="qtxt">'+q.q+'</div></div><div class="opts">'+['a','b','c','d'].map((l,oi)=>'<label class="olabel" id="o-'+k+'-'+oi+'" onclick="pickOpt(\''+k+'\','+oi+',this)"><input type="radio" name="'+k+'" value="'+oi+'"><div class="oltr">'+l+'</div>'+q.opts[oi]+'</label>').join('')+'</div>';c.appendChild(b);if(i<qs.length-1){const d=document.createElement('div');d.className='divider';c.appendChild(d);}});}
+function pickOpt(k,i,l){if(DONE)return;document.querySelectorAll('[id^="o-'+k+'-"]').forEach(x=>x.classList.remove('selected'));l.classList.add('selected');MA[k]=i;updateProg();}
+function updateWC(){ET=document.getElementById('essayEl').value.trim();const wc=ET?ET.split(/\s+/).length:0;const el=document.getElementById('wcEl');el.textContent=wc+' words'+(wc>=80?' — minimum met':' — '+(80-wc)+' more needed');el.className='wc'+(wc>=80?' ok':'');updateProg();}
+function updateProg(){let d=0,t=21;for(let i=1;i<=10;i++)if(BA[i])d++;for(let i=0;i<5;i++){if(MA['g'+i]!==undefined)d++;if(MA['v'+i]!==undefined)d++;}if(ET&&ET.split(/\s+/).length>=80)d++;document.getElementById('progFill').style.width=Math.round(d/t*100)+'%';[0,1,2,3].forEach(i=>document.getElementById('tab-'+i).classList.toggle('done',secDone(i)));}
+function secDone(i){if(i===0){let c=0;for(let j=1;j<=10;j++)if(BA[j])c++;return c===10;}if(i===1)return[0,1,2,3,4].every(j=>MA['g'+j]!==undefined);if(i===2)return[0,1,2,3,4].every(j=>MA['v'+j]!==undefined);if(i===3)return(ET?ET.split(/\s+/).length:0)>=80;}
+function startTimer(){clearInterval(TI);renderTimer();TI=setInterval(()=>{TL--;renderTimer();if(TL<=0){clearInterval(TI);submitExam(true);}},1000);}
+function renderTimer(){const m=String(Math.floor(TL/60)).padStart(2,'0'),s=String(TL%60).padStart(2,'0'),el=document.getElementById('timerEl');el.textContent=m+':'+s;el.className='timer'+(TL<=60?'crit':TL<=300?' warn':'');}
+function submitExam(auto){if(DONE)return;DONE=true;clearInterval(TI);ET=document.getElementById('essayEl').value.trim();
+let rs=0;document.querySelectorAll('.binp').forEach(inp=>{const n=parseInt(inp.dataset.n),ok=inp.dataset.ans.toLowerCase(),gv=(BA[n]||'').toLowerCase().trim();if(gv===ok){rs++;inp.classList.add('correct');}else if(gv)inp.classList.add('wrong');});
+let gs=0;CX.grammar.forEach((q,i)=>{const k='g'+i,gv=MA[k];['a','b','c','d'].forEach((_,oi)=>{const l=document.getElementById('o-'+k+'-'+oi);if(!l)return;if(oi===q.ans)l.classList.add('correct');else if(gv===oi&&oi!==q.ans)l.classList.add('wrong');l.classList.remove('selected');});if(gv===q.ans)gs++;});
+let vs=0;CX.vocab.forEach((q,i)=>{const k='v'+i,gv=MA[k];['a','b','c','d'].forEach((_,oi)=>{const l=document.getElementById('o-'+k+'-'+oi);if(!l)return;if(oi===q.ans)l.classList.add('correct');else if(gv===oi&&oi!==q.ans)l.classList.add('wrong');l.classList.remove('selected');});if(gv===q.ans)vs++;});
+const wc=ET?ET.split(/\s+/).length:0,el=ET.toLowerCase(),kh=(CX.writingKey||[]).filter(k=>el.includes(k.toLowerCase())).length;
+const rel=Math.min(4,Math.floor(kh/2.5)),gr=wc>=80?3:wc>=50?2:wc>=20?1:0,vp=Math.min(2,Math.floor(kh/3.5)),wp=wc>=80?1:0;
+const ws=Math.min(10,rel+gr+vp+wp),total=rs+(gs*3)+(vs*3)+ws;
+document.getElementById('rBig').textContent=total;
+let gc,gn,fb;if(total>=45){gc='ex';gn='Distinction';fb='Outstanding performance. Your grammar, vocabulary, and writing demonstrate excellent command of English. You are very well prepared for the national exam.';}
+else if(total>=35){gc='gd';gn='Pass';fb='Good result. You have a solid understanding of the material. Review grammar patterns and develop your essay with more specific examples to score higher.';}
+else if(total>=25){gc='av';gn='Near Pass';fb='You show a basic understanding of English. Focus on expanding vocabulary, practising grammar rules, and writing well-structured paragraphs.';}
+else{gc='lo';gn='Needs Work';fb='Keep practising. Work through each section systematically, review grammar rules daily, and read English texts to build confidence and accuracy.';}
+const rg=document.getElementById('rGrade');rg.textContent=gn;rg.className='rgrade '+gc;
+document.getElementById('rFeedback').textContent=fb;
+const bt=document.getElementById('btable');bt.innerHTML=[{n:'Reading',s:rs,m:10},{n:'Grammar',s:gs*3,m:15},{n:'Vocabulary',s:vs*3,m:15},{n:'Writing',s:ws,m:10}].map(x=>'<div class="brow"><div class="bsect">'+x.n+'</div><div class="bbwrap"><div class="bbar" style="width:'+Math.round(x.s/x.m*100)+'%"></div></div><div class="bscore">'+x.s+' / '+x.m+'</div></div>').join('');
+showPage('page-results');}
+function openReview(){if(!CX)return;const L=['a','b','c','d'];let h='';
+h+='<div class="rsect"><div class="rsect-title">Reading</div>';for(let i=1;i<=10;i++){const v=BA[i]||'—';h+='<div class="rrow2"><span class="rlbl">Blank ('+i+')</span><span class="rval">'+v+'</span></div>';}h+='</div>';
+h+='<div class="rsect"><div class="rsect-title">Grammar</div>';CX.grammar.forEach((q,i)=>{const k='g'+i,gv=MA[k],lb=gv!==undefined?L[gv]:'—',chk=DONE?(gv===q.ans?'<span class="chk ok">Correct</span>':'<span class="chk ng">Wrong ('+L[q.ans]+')</span>'):'';h+='<div class="rrow2"><span class="rlbl">Q'+(i+1)+'</span><span class="rval">'+lb+'</span>'+chk+'</div>';});h+='</div>';
+h+='<div class="rsect"><div class="rsect-title">Vocabulary</div>';CX.vocab.forEach((q,i)=>{const k='v'+i,gv=MA[k],lb=gv!==undefined?L[gv]:'—',chk=DONE?(gv===q.ans?'<span class="chk ok">Correct</span>':'<span class="chk ng">Wrong ('+L[q.ans]+')</span>'):'';h+='<div class="rrow2"><span class="rlbl">Q'+(i+1)+'</span><span class="rval">'+lb+'</span>'+chk+'</div>';});h+='</div>';
+const wc=ET?ET.split(/\s+/).length:0;h+='<div class="rsect"><div class="rsect-title">Writing</div><div style="font-size:.77rem;color:var(--muted);margin-bottom:8px;">'+wc+' words written</div>'+(ET?'<div style="font-size:.84rem;font-family:Instrument Serif,serif;line-height:1.8;color:var(--ink);background:var(--surface2);padding:13px;border-radius:var(--r);max-height:180px;overflow-y:auto;">'+ET+'</div>':'<div style="font-size:.8rem;color:var(--muted);font-style:italic">No essay written.</div>')+'</div>';
+document.getElementById('rbody').innerHTML=h;document.getElementById('rov').classList.add('open');}
+function closeReview(e){if(!e||e.target===document.getElementById('rov'))document.getElementById('rov').classList.remove('open');}
+function goSection(i){document.querySelectorAll('.pane').forEach((p,j)=>p.classList.toggle('active',j===i));document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));CS=i;window.scrollTo({top:0,behavior:'smooth'});}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function goLanding(){clearInterval(TI);showPage('page-landing');}
+function retake(){if(CX)startExam(CX);}
+function toggleTheme(){const d=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',d?'light':'dark');localStorage.setItem('bacii-t',d?'light':'dark');}
+(function(){const t=localStorage.getItem('bacii-t');if(t)document.documentElement.setAttribute('data-theme',t);})();
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2000);}
+</script>
+</body>
+</html>
