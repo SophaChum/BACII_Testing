@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BacII English Practice Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─── CSS Variables ─── */
+:root {
+  --bg: #f0f4ff;
+  --card: #ffffff;
+  --card2: #f7f9ff;
+  --text: #1a1f3c;
+  --subtext: #5a6080;
+  --border: #dde3f5;
+  --primary: #3b5bdb;
+  --primary-light: #e8eeff;
+  --accent: #e64980;
+  --accent2: #7c3aed;
+  --success: #0ca678;
+  --warning: #f59f00;
+  --danger: #f03e3e;
+  --timer-bg: #fff0f6;
+  --timer-text: #c2255c;
+  --pill-bg: #f3eeff;
+  --pill-text: #6d28d9;
+  --pill-border: #c4b5fd;
+  --shadow: 0 4px 24px rgba(59,91,219,0.10);
+  --shadow-lg: 0 8px 40px rgba(59,91,219,0.16);
+  --radius: 18px;
+  --radius-sm: 10px;
+  --header-grad: linear-gradient(135deg, #06b6d4 0%, #3b5bdb 60%, #7c3aed 100%);
+}
+[data-theme="dark"] {
+  --bg: #10132a;
+  --card: #181c3a;
+  --card2: #1e2347;
+  --text: #e8ecff;
+  --subtext: #8891c0;
+  --border: #2a3060;
+  --primary: #6b8aff;
+  --primary-light: #1c2350;
+  --accent: #f06595;
+  --accent2: #a78bfa;
+  --timer-bg: #2a1435;
+  --timer-text: #f06595;
+  --pill-bg: #1e1535;
+  --pill-text: #c4b5fd;
+  --pill-border: #4c1d95;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+  --header-grad: linear-gradient(135deg, #0e7490 0%, #1e3a8a 60%, #4c1d95 100%);
+}
+
+/* ─── Reset ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.4s, color 0.4s;
+  padding-bottom: 60px;
+}
+
+/* ─── Header ─── */
+.site-header {
+  background: var(--header-grad);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(59,91,219,0.25);
+}
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  gap: 12px;
+}
+.header-left { display: flex; flex-direction: column; gap: 2px; }
+.site-title {
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+.site-subtitle { font-size: 0.78rem; color: rgba(255,255,255,0.75); font-weight: 400; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+/* Timer */
+.timer-box {
+  background: var(--timer-bg);
+  color: var(--timer-text);
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.3s, color 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  min-width: 100px;
+  justify-content: center;
+}
+.timer-box.warning { background: #fff4e6; color: #e67700; animation: pulse 1s infinite; }
+.timer-box.danger { background: #fff0f0; color: #c92a2a; animation: pulse 0.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+
+/* Dark toggle */
+.theme-btn {
+  background: rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.35);
+  color: #fff;
+  border-radius: 50%;
+  width: 38px; height: 38px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+}
+.theme-btn:hover { background: rgba(255,255,255,0.3); transform: rotate(20deg); }
+
+/* Music toggle */
+.music-btn {
+  background: rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.35);
+  color: #fff;
+  border-radius: 50%;
+  width: 38px; height: 38px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.music-btn:hover { background: rgba(255,255,255,0.3); }
+.music-btn.active { background: rgba(255,255,255,0.35); }
+
+/* ─── Exam Info Bar ─── */
+.exam-info-bar {
+  max-width: 900px;
+  margin: 24px auto 0;
+  padding: 0 20px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.info-chip {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  padding: 8px 18px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--subtext);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow);
+  transition: background 0.3s;
+}
+.info-chip span.icon { font-size: 1rem; }
+
+/* ─── Progress Bar ─── */
+.progress-wrap {
+  max-width: 900px;
+  margin: 20px auto 0;
+  padding: 0 20px;
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--subtext);
+  margin-bottom: 6px;
+}
+.progress-track {
+  height: 8px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #06b6d4, #3b5bdb, #7c3aed);
+  border-radius: 99px;
+  width: 0%;
+  transition: width 0.5s cubic-bezier(.4,0,.2,1);
+}
+
+/* ─── Section Nav Tabs ─── */
+.section-tabs {
+  max-width: 900px;
+  margin: 24px auto 0;
+  padding: 0 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--subtext);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.tab-btn:hover { border-color: var(--primary); color: var(--primary); }
+.tab-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(59,91,219,0.25);
+}
+.tab-btn .tab-status {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.2s;
+}
+.tab-btn.done .tab-status { background: var(--success); }
+.tab-btn.active .tab-status { background: rgba(255,255,255,0.6); }
+
+/* ─── Exam Card ─── */
+.exam-card {
+  max-width: 900px;
+  margin: 20px auto 0;
+  padding: 0 20px;
+}
+.section-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  display: none;
+  animation: fadeUp 0.35s ease;
+}
+.section-card.active { display: block; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section-header {
+  padding: 24px 32px 20px;
+  border-bottom: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-icon {
+  width: 46px; height: 46px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.section-icon.reading { background: #e0f2fe; }
+.section-icon.grammar { background: #f0fdf4; }
+.section-icon.vocab { background: #fdf4ff; }
+.section-icon.writing { background: #fff7ed; }
+.section-title { font-size: 1.15rem; font-weight: 700; }
+.section-meta { font-size: 0.78rem; color: var(--subtext); margin-top: 2px; }
+.section-body { padding: 28px 32px; }
+
+/* ─── Word Bank ─── */
+.word-bank-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--subtext); margin-bottom: 12px; }
+.word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+  padding: 18px;
+  background: var(--pill-bg);
+  border-radius: var(--radius-sm);
+  border: 1.5px dashed var(--pill-border);
+}
+.word-pill {
+  background: var(--card);
+  border: 1.5px solid var(--pill-border);
+  color: var(--pill-text);
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+}
+.word-pill:hover { background: var(--accent2); border-color: var(--accent2); color: #fff; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(124,58,237,0.2); }
+.word-pill.used { opacity: 0.4; pointer-events: none; text-decoration: line-through; }
+
+/* ─── Passage ─── */
+.passage {
+  font-family: 'Lora', serif;
+  font-size: 0.97rem;
+  line-height: 2;
+  color: var(--text);
+  background: var(--card2);
+  border-radius: var(--radius-sm);
+  padding: 22px 26px;
+  margin-bottom: 10px;
+}
+.passage strong { color: var(--accent2); font-style: italic; }
+.blank-input {
+  display: inline-block;
+  position: relative;
+}
+.blank-input input {
+  width: 120px;
+  border: none;
+  border-bottom: 2.5px solid var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 2px 8px;
+  border-radius: 4px 4px 0 0;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+.blank-input input:focus { border-bottom-color: var(--accent2); background: var(--pill-bg); }
+.blank-input input.correct { border-bottom-color: var(--success); background: #e6faf5; color: var(--success); }
+.blank-input input.wrong { border-bottom-color: var(--danger); background: #fff0f0; color: var(--danger); }
+.blank-label { font-size: 0.7rem; font-weight: 700; color: var(--subtext); margin-right: 2px; }
+
+/* ─── MCQ ─── */
+.question-block {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1.5px solid var(--border);
+}
+.question-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.q-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.q-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.65;
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 14px;
+}
+.q-text-inner { flex: 1; }
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media(max-width:520px){ .options-grid { grid-template-columns: 1fr; } }
+.option-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all 0.18s;
+  background: var(--card);
+  user-select: none;
+}
+.option-label:hover { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+.option-label input[type="radio"] { display: none; }
+.option-label.selected { border-color: var(--primary); background: var(--primary); color: #fff; }
+.option-label.correct { border-color: var(--success); background: #d3f9d8; color: #087f5b; }
+.option-label.wrong { border-color: var(--danger); background: #ffe3e3; color: var(--danger); }
+.option-letter {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: background 0.18s;
+}
+.option-label.selected .option-letter { background: rgba(255,255,255,0.25); }
+
+/* ─── Writing Section ─── */
+.writing-prompt {
+  background: linear-gradient(135deg, #fff7ed, #fdf4ff);
+  border: 1.5px solid #fbbf24;
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  margin-bottom: 20px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.writing-prompt strong { color: #d97706; }
+.writing-area {
+  width: 100%;
+  min-height: 180px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-family: 'Lora', serif;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--text);
+  background: var(--card2);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.writing-area:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,91,219,0.12); }
+.word-count { font-size: 0.75rem; color: var(--subtext); text-align: right; margin-top: 6px; }
+.word-count.ok { color: var(--success); }
+
+/* ─── Navigation Buttons ─── */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border-top: 1.5px solid var(--border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 11px 26px;
+  border-radius: 50px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 7px;
+  letter-spacing: 0.2px;
+}
+.btn-outline {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  color: var(--subtext);
+}
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(59,91,219,0.28);
+}
+.btn-primary:hover { background: #2f4ac4; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59,91,219,0.36); }
+.btn-accent {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(230,73,128,0.3);
+}
+.btn-accent:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(230,73,128,0.4); }
+.btn-success {
+  background: linear-gradient(135deg, #0ca678, #087f5b);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(12,166,120,0.3);
+}
+.btn-success:hover { transform: translateY(-2px); }
+.btn:active { transform: scale(0.97) !important; }
+.nav-center { display: flex; gap: 10px; }
+
+/* ─── Review Overlay ─── */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(10,12,40,0.7);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.overlay-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: popIn 0.3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
+.overlay-header {
+  padding: 24px 28px 16px;
+  border-bottom: 1.5px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.overlay-header h2 { font-size: 1.1rem; font-weight: 700; }
+.close-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--subtext); padding: 4px; }
+.close-btn:hover { color: var(--danger); }
+.overlay-body { padding: 20px 28px 28px; }
+
+/* ─── Results Page ─── */
+#results-page {
+  display: none;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+#results-page.show { display: block; animation: fadeUp 0.4s ease; }
+.results-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.results-header {
+  padding: 40px 32px 32px;
+  text-align: center;
+  background: var(--header-grad);
+  color: #fff;
+}
+.score-ring {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: 5px solid rgba(255,255,255,0.4);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  margin: 0 auto 20px;
+  font-size: 2rem;
+  font-weight: 800;
+}
+.score-ring small { font-size: 0.75rem; font-weight: 400; opacity: 0.8; margin-top: -4px; }
+.results-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; }
+.results-subtitle { font-size: 0.9rem; opacity: 0.8; }
+.results-body { padding: 28px 32px; }
+.breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.breakdown-item {
+  background: var(--card2);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  text-align: center;
+  border: 1.5px solid var(--border);
+}
+.breakdown-item .sect-name { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--subtext); }
+.breakdown-item .sect-score { font-size: 1.6rem; font-weight: 800; color: var(--primary); margin: 6px 0 2px; }
+.breakdown-item .sect-max { font-size: 0.75rem; color: var(--subtext); }
+.feedback-box {
+  background: linear-gradient(135deg, #f0fdf4, #e0f2fe);
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #064e3b;
+}
+[data-theme="dark"] .feedback-box { background: linear-gradient(135deg, #1a3a2a, #0e2a3a); color: #6ee7b7; }
+.results-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ─── Admin Panel ─── */
+.admin-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--accent2);
+  color: #fff;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(124,58,237,0.4);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 150;
+  transition: transform 0.2s;
+}
+.admin-toggle:hover { transform: rotate(15deg) scale(1.1); }
+
+/* ─── Misc ─── */
+.hint { font-size: 0.78rem; color: var(--subtext); margin-top: 10px; font-style: italic; }
+.section-divider { height: 1.5px; background: var(--border); margin: 20px 0; }
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--primary-light);
+  color: var(--primary);
+}
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #1e293b; color: #fff;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+
+@media(max-width:600px){
+  .section-body, .nav-bar { padding: 20px 18px; }
+  .section-header { padding: 18px 18px 14px; }
+  .header-inner { padding: 12px 16px; }
+  .nav-bar { gap: 8px; }
+  .btn { padding: 9px 18px; font-size: 0.82rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="site-title">📘 BacII English Practice Exam</div>
+      <div class="site-subtitle">Cambodian National Exam Preparation · Grade 12</div>
+    </div>
+    <div class="header-right">
+      <div class="timer-box" id="timer">⏱ 45:00</div>
+      <button class="music-btn" id="musicBtn" title="Toggle background music" onclick="toggleMusic()">🎵</button>
+      <button class="theme-btn" id="themeBtn" title="Toggle dark mode" onclick="toggleTheme()">🌙</button>
+    </div>
+  </div>
+</header>
+
+<!-- ─── EXAM INFO ─── -->
+<div class="exam-info-bar">
+  <div class="info-chip"><span class="icon">📅</span> <strong>Date:</strong> May 24, 2026</div>
+  <div class="info-chip"><span class="icon">⏳</span> <strong>Duration:</strong> 45 minutes</div>
+  <div class="info-chip"><span class="icon">⭐</span> <strong>Total:</strong> 50 points</div>
+  <div class="info-chip"><span class="icon">📚</span> <strong>Level:</strong> Grade 12 / BacII</div>
+</div>
+
+<!-- ─── PROGRESS BAR ─── -->
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Exam Progress</span>
+    <span id="progressText">0% complete</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<!-- ─── SECTION TABS ─── -->
+<div class="section-tabs">
+  <button class="tab-btn active" data-section="0" onclick="goToSection(0)">
+    <div class="tab-status"></div> 📖 Reading
+  </button>
+  <button class="tab-btn" data-section="1" onclick="goToSection(1)">
+    <div class="tab-status"></div> ✏️ Grammar
+  </button>
+  <button class="tab-btn" data-section="2" onclick="goToSection(2)">
+    <div class="tab-status"></div> 💬 Vocabulary
+  </button>
+  <button class="tab-btn" data-section="3" onclick="goToSection(3)">
+    <div class="tab-status"></div> 📝 Writing
+  </button>
+</div>
+
+<!-- ─── EXAM CARD ─── -->
+<div class="exam-card">
+
+  <!-- SECTION 1: READING -->
+  <div class="section-card active" id="section-0">
+    <div class="section-header">
+      <div class="section-icon reading">📖</div>
+      <div>
+        <div class="section-title">Part 1 — Reading</div>
+        <div class="section-meta">Fill in the blanks using the word bank below · 10 points</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="word-bank-label">📦 Word Bank — click a word to select it, then click a blank</div>
+      <div class="word-bank" id="wordBank">
+        <div class="word-pill" onclick="selectWord(this)">television</div>
+        <div class="word-pill" onclick="selectWord(this)">department</div>
+        <div class="word-pill" onclick="selectWord(this)">money</div>
+        <div class="word-pill" onclick="selectWord(this)">promoted</div>
+        <div class="word-pill" onclick="selectWord(this)">waitress</div>
+        <div class="word-pill" onclick="selectWord(this)">presenters</div>
+        <div class="word-pill" onclick="selectWord(this)">was</div>
+        <div class="word-pill" onclick="selectWord(this)">applied</div>
+        <div class="word-pill" onclick="selectWord(this)">few months</div>
+        <div class="word-pill" onclick="selectWord(this)">job</div>
+      </div>
+      <div class="hint">💡 Tip: Click a word in the bank, then click a blank to fill it in. Click a filled blank to clear it.</div>
+      <br>
+      <div class="passage">
+        <strong>A Working Life</strong><br><br>
+        Well, I studied (0) <strong>economics</strong> at university, and then I was lucky because I got a
+        (1) <span class="blank-input"><input type="text" id="b1" data-answer="television" placeholder="___" onclick="fillBlank(this)" readonly></span>
+        very quickly as an accountant in a local
+        (2) <span class="blank-input"><input type="text" id="b2" data-answer="department" placeholder="___" onclick="fillBlank(this)" readonly></span>
+        store. It wasn't exactly what I wanted, but you know, it was a very first job. I stayed there for four years altogether. After three years I was
+        (3) <span class="blank-input"><input type="text" id="b3" data-answer="promoted" placeholder="___" onclick="fillBlank(this)" readonly></span>
+        to accounts manager, and I stayed in that job for a year, but then I really got bored, so I decided to leave and I
+        (4) <span class="blank-input"><input type="text" id="b4" data-answer="applied" placeholder="___" onclick="fillBlank(this)" readonly></span>
+        for other jobs in area. But I had no luck getting a second job at all, and I was very short of
+        (5) <span class="blank-input"><input type="text" id="b5" data-answer="money" placeholder="___" onclick="fillBlank(this)" readonly></span>,
+        so in the end I had to get a job working as a
+        (6) <span class="blank-input"><input type="text" id="b6" data-answer="waitress" placeholder="___" onclick="fillBlank(this)" readonly></span>
+        in a restaurant. Well it wasn't very successful because I'm quite clumsy. So, after a
+        (7) <span class="blank-input"><input type="text" id="b7" data-answer="few months" placeholder="___" onclick="fillBlank(this)" readonly></span>
+        they gave me a sack. And then, just by chance an old friend who
+        (8) <span class="blank-input"><input type="text" id="b8" data-answer="was" placeholder="___" onclick="fillBlank(this)" readonly></span>
+        at university with, and he was working in
+        (9) <span class="blank-input"><input type="text" id="b9" data-answer="television" placeholder="___" onclick="fillBlank(this)" readonly></span>.
+        And he got me a job as a television researcher on a program called 'Business Today'. And after a
+        (10) <span class="blank-input"><input type="text" id="b10" data-answer="presenters" placeholder="___" onclick="fillBlank(this)" readonly></span>
+        really they decided that they wanted a young job of programme, and I got a job and I love it.
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div></div>
+      <div class="nav-center"></div>
+      <button class="btn btn-primary" onclick="goToSection(1)">Grammar ➜</button>
+    </div>
+  </div>
+
+  <!-- SECTION 2: GRAMMAR -->
+  <div class="section-card" id="section-1">
+    <div class="section-header">
+      <div class="section-icon grammar">✏️</div>
+      <div>
+        <div class="section-title">Part 2 — Grammar</div>
+        <div class="section-meta">Choose the correct answer (a, b, c, or d) · 15 points</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="question-block">
+        <div class="q-text"><span class="q-num">1</span><span class="q-text-inner">Mr. Kimseng can't talk on phone because he ____________ dinner right now.</span></div>
+        <div class="options-grid">
+          <label class="option-label" onclick="selectOption(this,'g1')"><input type="radio" name="g1" value="a"><div class="option-letter">a</div> mustn't</label>
+          <label class="option-label" onclick="selectOption(this,'g1')"><input type="radio" name="g1" value="b"><div class="option-letter">b</div> haven't to</label>
+          <label class="option-label" onclick="selectOption(this,'g1')"><input type="radio" name="g1" value="c"><div class="option-letter">c</div> haven't</label>
+          <label class="option-label" onclick="selectOption(this,'g1')"><input type="radio" name="g1" value="d"><div class="option-letter">d</div> mustn't to</label>
+        </div>
+      </div>
+      <div class="question-block">
+        <div class="q-text"><span class="q-num">2</span><span class="q-text-inner">That little girl ____________ for the last two days.</span></div>
+        <div class="options-grid">
+          <label class="option-label" onclick="selectOption(this,'g2')"><input type="radio" name="g2" value="a"><div class="option-letter">a</div> hasn't eaten</label>
+          <label class="option-label" onclick="selectOption(this,'g2')"><input type="radio" name="g2" value="b"><div class="option-letter">b</div> doesn't eat</label>
+          <label class="option-label" onclick="selectOption(this,'g2')"><input type="radio" name="g2" value="c"><div class="option-letter">c</div> isn't eating</label>
+          <label class="option-label" onclick="selectOption(this,'g2')"><input type="radio" name="g2" value="d"><div class="option-letter">d</div> has eaten</label>
+        </div>
+      </div>
+      <div class="question-block">
+        <div class="q-text"><span class="q-num">3</span><span class="q-text-inner">Several trees fell down last night ____________ the strong wind.</span></div>
+        <div class="options-grid">
+          <label class="option-label" onclick="selectOption(this,'g3')"><input type="radio" name="g3" value="a"><div class="option-letter">a</div> because</label>
+          <label class="option-label" onclick="selectOption(this,'g3')"><input type="radio" name="g3" value="b"><div class="option-letter">b</div> so</label>
+          <label class="option-label" onclick="selectOption(this,'g3')"><input type="radio" name="g3" value="c"><div class="option-letter">c</div> since</label>
+          <label class="option-label" onclick="selectOption(this,'g3')"><input type="radio" name="g3" value="d"><div class="option-letter">d</div> because of</label>
+        </div>
+      </div>
+      <div class="question-block">
+        <div class="q-text"><span class="q-num">4</span><span class="q-text-inner">I hope you ____________ us when you come here.</span></div>
+        <div class="options-grid">
+          <label class="option-label" onclick="selectOption(this,'g4')"><input type="radio" name="g4" value="a"><div class="option-letter">a</div> visited</label>
+          <label class="option-label" onclick="selectOption(this,'g4')"><input type="radio" name="g4" value="b"><div class="option-letter">b</div> would visit</label>
+          <label class="option-label" onclick="selectOption(this,'g4')"><input type="radio" name="g4" value="c"><div class="option-letter">c</div> visiting</label>
+          <label class="option-label" onclick="selectOption(this,'g4')"><input type="radio" name="g4" value="d"><div class="option-letter">d</div> will visit</label>
+        </div>
+      </div>
+      <div class="question-block">
+        <div class="q-text"><span class="q-num">5</span><span class="q-text-inner">If she doesn't do her homework, she ____________ punished.</span></div>
+        <div class="options-grid">
+          <label class="option-label" onclick="selectOption(this,'g5')"><input type="radio" name="g5" value="a"><div class="option-letter">a</div> is</label>
+          <label class="option-label" onclick="selectOption(this,'g5')"><input type="radio" name="g5" value="b"><div class="option-letter">b</div> would be</label>
+          <label class="option-label" onclick="selectOption(this,'g5')"><input type="radio" name="g5" value="c"><div class="option-letter">c</div> will be</label>
+          <label class="option-label" onclick="selectOption(this,'g5')"><input type="radio" name="g5" value="d"><div class="option-letter">d</div> will have</label>
+        </div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-outline" onclick="goToSection(0)">← Reading</button>
+      <div class="nav-center"></div>
+      <button class="btn btn-primary" onclick="goToSection(2)">Vocabulary ➜</button>
+    </div>
+  </div>
+
+  <!-- SECTION 3: VOCABULARY -->
+  <div class="section-card" id="section-2">
+    <div class="section-header">
+      <div class="section-icon vocab">💬</div>
+      <div>
+        <div class="section-title">Part 3 — Vocabulary</div>
+        <div class="section-meta">Choose the best word to complete each sentence · 15 points</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="question-block">
+        <div class="q-text"><span class="q-num">1</span><span class="q-text-inner">I'm really ____________ of my child who got the first prize in art competition.</span></div>
+        <div class="options-grid">
+          <label class="option-label" onclick="selectOption(this,'v1')"><input type="radio" name="v1" value="a"><div class="option-letter">a</div> pleased</label>
+          <label class="option-label" onclick="selectOption(this,'v1')"><input type="radio" name="v1" value="b"><div class="option-letter">b</div> proud</label>
+          <label class="option-label" onclick="selectOption(this,'v1')"><input type="radio" name="v1" value="c"><div class="option-letter">c</div> happy</label>
+          <label class="option-label" onclick="selectOption(this,'v1')"><input type="radio" name="v1" value="d"><div class="option-letter">d</div> delighted</label>
+        </div>
+      </div>
+      <div class="question-block">
+        <div class="q-text"><span class="q-num">2</span><span class="q-text-inner">In recent years inflation has almost doubled the ____________ of living.</span></div>
+        <div class="options-grid">
+          <label class="option-label" onclick="selectOption(this,'v2')"><input type="radio" name="v2" value="a"><div class="option-letter">a</div> cost</label>
+          <label class="option-label" onclick="selectOption(this,'v2')"><input type="radio" name="v2" value="b"><div class="option-letter">b</div> expense</label>
+          <label class="option-label" onclick="selectOption(this,'v2')"><input type="radio" name="v2" value="c"><div class="option-letter">c</div> charge</label>
+          <label class="option-label" onclick="selectOption(this,'v2')"><input type="radio" name="v2" value="d"><div class="option-letter">d</div> price</label>
+        </div>
+      </div>
+      <div class="question-block">
+        <div class="q-text"><span class="q-num">3</span><span class="q-text-inner">The restaurant services are bad, so we should write a ____________ to the manager.</span></div>
+        <div class="options-grid">
+          <label class="option-label" onclick="selectOption(this,'v3')"><input type="radio" name="v3" value="a"><div class="option-letter">a</div> essay</label>
+          <label class="option-label" onclick="selectOption(this,'v3')"><input type="radio" name="v3" value="b"><div class="option-letter">b</div> message</label>
+          <label class="option-label" onclick="selectOption(this,'v3')"><input type="radio" name="v3" value="c"><div class="option-letter">c</div> complaint</label>
+          <label class="option-label" onclick="selectOption(this,'v3')"><input type="radio" name="v3" value="d"><div class="option-letter">d</div> information</label>
+        </div>
+      </div>
+      <div class="question-block">
+        <div class="q-text"><span class="q-num">4</span><span class="q-text-inner">The plane was delayed by fog, and so I ____________ my connection.</span></div>
+        <div class="options-grid">
+          <label class="option-label" onclick="selectOption(this,'v4')"><input type="radio" name="v4" value="a"><div class="option-letter">a</div> lost</label>
+          <label class="option-label" onclick="selectOption(this,'v4')"><input type="radio" name="v4" value="b"><div class="option-letter">b</div> abandoned</label>
+          <label class="option-label" onclick="selectOption(this,'v4')"><input type="radio" name="v4" value="c"><div class="option-letter">c</div> forgot</label>
+          <label class="option-label" onclick="selectOption(this,'v4')"><input type="radio" name="v4" value="d"><div class="option-letter">d</div> missed</label>
+        </div>
+      </div>
+      <div class="question-block">
+        <div class="q-text"><span class="q-num">5</span><span class="q-text-inner">She went to the library to ____________.</span></div>
+        <div class="options-grid">
+          <label class="option-label" onclick="selectOption(this,'v5')"><input type="radio" name="v5" value="a"><div class="option-letter">a</div> borrow a book</label>
+          <label class="option-label" onclick="selectOption(this,'v5')"><input type="radio" name="v5" value="b"><div class="option-letter">b</div> lend a book</label>
+          <label class="option-label" onclick="selectOption(this,'v5')"><input type="radio" name="v5" value="c"><div class="option-letter">c</div> let a book</label>
+          <label class="option-label" onclick="selectOption(this,'v5')"><input type="radio" name="v5" value="d"><div class="option-letter">d</div> hire a book</label>
+        </div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-outline" onclick="goToSection(1)">← Grammar</button>
+      <div class="nav-center"></div>
+      <button class="btn btn-primary" onclick="goToSection(3)">Writing ➜</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4: WRITING -->
+  <div class="section-card" id="section-3">
+    <div class="section-header">
+      <div class="section-icon writing">📝</div>
+      <div>
+        <div class="section-title">Part 4 — Writing</div>
+        <div class="section-meta">Write an essay of at least 80 words · 10 points</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="writing-prompt">
+        <strong>📌 Essay Topic:</strong><br>
+        Write an essay of at least <strong>80 words</strong> about <strong>"Your goal in the future"</strong>.<br>
+        Think about your career, education, family, or personal ambitions. Use clear paragraphs and good grammar.
+      </div>
+      <textarea class="writing-area" id="writingArea" placeholder="Start writing your essay here…" oninput="updateWordCount()"></textarea>
+      <div class="word-count" id="wordCount">0 words (need at least 80)</div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-outline" onclick="goToSection(2)">← Vocabulary</button>
+      <div class="nav-center">
+        <button class="btn btn-accent" onclick="openReview()">👁 Review Answers</button>
+      </div>
+      <button class="btn btn-success" onclick="submitExam()">✅ Submit Exam</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── RESULTS PAGE ─── -->
+<div id="results-page">
+  <div class="results-card">
+    <div class="results-header">
+      <div class="score-ring" id="scoreRing">0<small>/ 50</small></div>
+      <div class="results-title" id="resultsTitle">Exam Complete!</div>
+      <div class="results-subtitle" id="resultsSubtitle">Here's your performance breakdown</div>
+    </div>
+    <div class="results-body">
+      <div class="breakdown-grid">
+        <div class="breakdown-item">
+          <div class="sect-name">📖 Reading</div>
+          <div class="sect-score" id="readScore">0</div>
+          <div class="sect-max">out of 10</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="sect-name">✏️ Grammar</div>
+          <div class="sect-score" id="gramScore">0</div>
+          <div class="sect-max">out of 15</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="sect-name">💬 Vocabulary</div>
+          <div class="sect-score" id="vocabScore">0</div>
+          <div class="sect-max">out of 15</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="sect-name">📝 Writing</div>
+          <div class="sect-score" id="writeScore">0</div>
+          <div class="sect-max">out of 10</div>
+        </div>
+      </div>
+      <div class="feedback-box" id="feedbackBox">Great effort! Keep practicing to improve your score.</div>
+      <div class="results-actions">
+        <button class="btn btn-primary" onclick="retakeExam()">🔄 Retake Exam</button>
+        <button class="btn btn-outline" onclick="openReview()">👁 Review Answers</button>
+        <button class="btn btn-outline" onclick="window.print()">🖨 Print Results</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── REVIEW OVERLAY ─── -->
+<div class="overlay" id="reviewOverlay">
+  <div class="overlay-card">
+    <div class="overlay-header">
+      <h2>📋 Answer Review</h2>
+      <button class="close-btn" onclick="closeReview()">✕</button>
+    </div>
+    <div class="overlay-body" id="reviewContent"></div>
+  </div>
+</div>
+
+<!-- ─── ADMIN OVERLAY ─── -->
+<div class="overlay" id="adminOverlay">
+  <div class="overlay-card">
+    <div class="overlay-header">
+      <h2>⚙️ Admin Panel</h2>
+      <button class="close-btn" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="overlay-body">
+      <p style="color:var(--subtext);font-size:0.88rem;line-height:1.7">
+        <strong>Admin Mode</strong> lets you modify exam content.<br><br>
+        In a full deployment, this panel would allow:<br>
+        • Add or edit questions in each section<br>
+        • Change correct answers and word bank<br>
+        • Set exam duration<br>
+        • Export results as CSV/PDF<br>
+        • View student attempt history<br><br>
+        <em>This demo panel is a placeholder. Connect it to a backend to enable full admin features.</em>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST ─── -->
+<div class="toast" id="toast"></div>
+
+<!-- ─── ADMIN BUTTON ─── -->
+<button class="admin-toggle" title="Admin Panel" onclick="document.getElementById('adminOverlay').classList.add('open')">⚙️</button>
+
+<script>
+/* ─── STATE ─── */
+let currentSection = 0;
+let selectedWord = null;
+let timerInterval = null;
+let totalSeconds = 45 * 60;
+let examSubmitted = false;
+let musicPlaying = false;
+let audioCtx = null;
+let oscillators = [];
+
+const ANSWERS = {
+  g1:'a', g2:'a', g3:'d', g4:'d', g5:'c',
+  v1:'b', v2:'a', v3:'c', v4:'d', v5:'a'
+};
+const READ_ANSWERS = { b1:'television',b2:'department',b3:'promoted',b4:'applied',b5:'money',b6:'waitress',b7:'few months',b8:'was',b9:'television',b10:'presenters' };
+
+/* ─── INIT ─── */
+window.onload = () => {
+  loadFromStorage();
+  startTimer();
+  updateProgress();
+};
+
+/* ─── TIMER ─── */
+function startTimer() {
+  const saved = localStorage.getItem('bacii_timer');
+  if (saved) totalSeconds = parseInt(saved);
+  renderTimer();
+  timerInterval = setInterval(() => {
+    if (examSubmitted) { clearInterval(timerInterval); return; }
+    totalSeconds--;
+    localStorage.setItem('bacii_timer', totalSeconds);
+    renderTimer();
+    if (totalSeconds <= 0) { clearInterval(timerInterval); submitExam(true); }
+  }, 1000);
+}
+function renderTimer() {
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  const el = document.getElementById('timer');
+  el.textContent = `⏱ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.className = 'timer-box';
+  if (totalSeconds <= 300 && totalSeconds > 60) el.classList.add('warning');
+  else if (totalSeconds <= 60) el.classList.add('danger');
+}
+
+/* ─── NAVIGATION ─── */
+function goToSection(idx) {
+  document.querySelectorAll('.section-card').forEach((el,i)=>el.classList.toggle('active',i===idx));
+  document.querySelectorAll('.tab-btn').forEach((el,i)=>el.classList.toggle('active',i===idx));
+  currentSection = idx;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ─── WORD BANK ─── */
+function selectWord(pill) {
+  if (pill.classList.contains('used')) return;
+  document.querySelectorAll('.word-pill').forEach(p=>p.style.outline='none');
+  if (selectedWord === pill) { selectedWord = null; return; }
+  selectedWord = pill;
+  pill.style.outline = '2.5px solid var(--accent2)';
+  showToast('✨ Now click a blank to fill it');
+}
+function fillBlank(input) {
+  if (examSubmitted) return;
+  if (input.value) {
+    // un-use the old word
+    document.querySelectorAll('.word-pill').forEach(p=>{ if(p.textContent===input.value) p.classList.remove('used'); });
+    input.value = '';
+    input.style.color = '';
+    saveToStorage();
+    updateProgress();
+    return;
+  }
+  if (!selectedWord) { showToast('⚠️ Pick a word from the bank first'); return; }
+  input.value = selectedWord.textContent;
+  input.style.color = 'var(--accent2)';
+  selectedWord.classList.add('used');
+  selectedWord.style.outline = 'none';
+  selectedWord = null;
+  saveToStorage();
+  updateProgress();
+}
+
+/* ─── MCQ ─── */
+function selectOption(label, name) {
+  if (examSubmitted) return;
+  document.querySelectorAll(`[name="${name}"]`).forEach(r=>r.closest('.option-label').classList.remove('selected'));
+  label.classList.add('selected');
+  label.querySelector('input').checked = true;
+  saveToStorage();
+  updateProgress();
+}
+
+/* ─── WORD COUNT ─── */
+function updateWordCount() {
+  const text = document.getElementById('writingArea').value.trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  const el = document.getElementById('wordCount');
+  el.textContent = `${words} words${words >= 80 ? ' ✓ Minimum met!' : ` (need at least ${80-words} more)`}`;
+  el.className = 'word-count' + (words >= 80 ? ' ok' : '');
+  saveToStorage();
+  updateProgress();
+}
+
+/* ─── PROGRESS ─── */
+function updateProgress() {
+  let answered = 0, total = 20;
+  for (let i=1;i<=10;i++) { const v = document.getElementById('b'+i)?.value; if(v) answered++; }
+  ['g1','g2','g3','g4','g5','v1','v2','v3','v4','v5'].forEach(n=>{ if(document.querySelector(`[name="${n}"]:checked`)) answered++; });
+  const essay = document.getElementById('writingArea')?.value?.trim();
+  if(essay && essay.split(/\s+/).length >= 80) answered++;
+  const pct = Math.round((answered/total)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressText').textContent = pct+'% complete';
+  // mark tab done
+  document.querySelectorAll('.tab-btn').forEach((btn,i)=>{
+    const done = isSectionDone(i);
+    btn.classList.toggle('done', done);
+  });
+}
+function isSectionDone(idx) {
+  if(idx===0) { let c=0; for(let i=1;i<=10;i++) if(document.getElementById('b'+i)?.value) c++; return c===10; }
+  if(idx===1) { return ['g1','g2','g3','g4','g5'].every(n=>document.querySelector(`[name="${n}"]:checked`)); }
+  if(idx===2) { return ['v1','v2','v3','v4','v5'].every(n=>document.querySelector(`[name="${n}"]:checked`)); }
+  if(idx===3) { const t=document.getElementById('writingArea')?.value?.trim()||''; return t.split(/\s+/).length>=80; }
+}
+
+/* ─── STORAGE ─── */
+function saveToStorage() {
+  const data = {};
+  for(let i=1;i<=10;i++) data['b'+i] = document.getElementById('b'+i)?.value||'';
+  ['g1','g2','g3','g4','g5','v1','v2','v3','v4','v5'].forEach(n=>{ const ch=document.querySelector(`[name="${n}"]:checked`); data[n]=ch?ch.value:''; });
+  data.essay = document.getElementById('writingArea')?.value||'';
+  localStorage.setItem('bacii_answers', JSON.stringify(data));
+}
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem('bacii_answers');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    for(let i=1;i<=10;i++) {
+      const inp = document.getElementById('b'+i);
+      if(inp && data['b'+i]) {
+        inp.value = data['b'+i];
+        inp.style.color='var(--accent2)';
+        document.querySelectorAll('.word-pill').forEach(p=>{ if(p.textContent===data['b'+i]) p.classList.add('used'); });
+      }
+    }
+    ['g1','g2','g3','g4','g5','v1','v2','v3','v4','v5'].forEach(n=>{
+      if(data[n]) {
+        const labels = document.querySelectorAll(`[name="${n}"]`);
+        labels.forEach(r=>{ if(r.value===data[n]) { r.checked=true; r.closest('.option-label').classList.add('selected'); } });
+      }
+    });
+    if(data.essay) { document.getElementById('writingArea').value=data.essay; updateWordCount(); }
+  } catch(e) {}
+}
+
+/* ─── SUBMIT ─── */
+function submitExam(auto=false) {
+  if(examSubmitted) return;
+  if(!auto) {
+    const essay = document.getElementById('writingArea').value.trim();
+    const words = essay ? essay.split(/\s+/).length : 0;
+    if(words < 20 && !confirm('Your essay seems very short. Are you sure you want to submit?')) return;
+  }
+  examSubmitted = true;
+  clearInterval(timerInterval);
+
+  // score reading
+  let readScore=0;
+  for(let i=1;i<=10;i++){
+    const inp = document.getElementById('b'+i);
+    if(inp && inp.value.toLowerCase().trim() === READ_ANSWERS['b'+i]) { readScore++; inp.classList.add('correct'); }
+    else if(inp && inp.value) inp.classList.add('wrong');
+  }
+  // score grammar/vocab
+  let gramScore=0, vocabScore=0;
+  ['g1','g2','g3','g4','g5'].forEach(n=>{
+    const ch=document.querySelector(`[name="${n}"]:checked`);
+    document.querySelectorAll(`[name="${n}"]`).forEach(r=>{
+      const lbl=r.closest('.option-label');
+      if(r.value===ANSWERS[n]) lbl.classList.add('correct');
+      if(ch && ch.value===r.value && r.value!==ANSWERS[n]) lbl.classList.add('wrong');
+    });
+    if(ch && ch.value===ANSWERS[n]) gramScore+=3;
+  });
+  ['v1','v2','v3','v4','v5'].forEach(n=>{
+    const ch=document.querySelector(`[name="${n}"]:checked`);
+    document.querySelectorAll(`[name="${n}"]`).forEach(r=>{
+      const lbl=r.closest('.option-label');
+      if(r.value===ANSWERS[n]) lbl.classList.add('correct');
+      if(ch && ch.value===r.value && r.value!==ANSWERS[n]) lbl.classList.add('wrong');
+    });
+    if(ch && ch.value===ANSWERS[n]) vocabScore+=3;
+  });
+  // writing heuristic
+  const essay = document.getElementById('writingArea').value.trim();
+  const wc = essay ? essay.split(/\s+/).length : 0;
+  let writeScore = 0;
+  if(wc>=80) writeScore=7;
+  else if(wc>=50) writeScore=5;
+  else if(wc>=30) writeScore=3;
+  else if(wc>=10) writeScore=1;
+
+  const total = readScore+gramScore+vocabScore+writeScore;
+
+  document.getElementById('readScore').textContent=readScore;
+  document.getElementById('gramScore').textContent=gramScore;
+  document.getElementById('vocabScore').textContent=vocabScore;
+  document.getElementById('writeScore').textContent=writeScore;
+  document.getElementById('scoreRing').innerHTML=`${total}<small>/ 50</small>`;
+
+  let msg='', title='';
+  if(total>=45){title='🏆 Outstanding!';msg='Excellent work! You have a very strong command of English. You are well prepared for the BacII exam!';}
+  else if(total>=35){title='🎉 Well Done!';msg='Good performance! Review a few grammar points and your essay structure to score even higher.';}
+  else if(total>=25){title='📈 Keep Going!';msg='You have a solid foundation. Practice vocabulary and grammar patterns daily to build confidence.';}
+  else{title='💪 Keep Practicing!';msg='Do not be discouraged — every practice makes you stronger. Review the answer key and try again!';}
+
+  document.getElementById('resultsTitle').textContent=title;
+  document.getElementById('feedbackBox').textContent=msg;
+  document.querySelector('.exam-card').style.display='none';
+  document.querySelectorAll('.section-tabs,.progress-wrap,.exam-info-bar').forEach(el=>el.style.display='none');
+  document.getElementById('results-page').classList.add('show');
+  localStorage.removeItem('bacii_answers');
+  localStorage.removeItem('bacii_timer');
+}
+
+/* ─── RETAKE ─── */
+function retakeExam() {
+  localStorage.removeItem('bacii_answers');
+  localStorage.removeItem('bacii_timer');
+  location.reload();
+}
+
+/* ─── REVIEW ─── */
+function openReview() {
+  const rows = [];
+  rows.push('<h3 style="margin-bottom:14px;font-size:0.95rem;">📖 Reading (Fill-in-the-blank)</h3>');
+  for(let i=1;i<=10;i++){
+    const inp=document.getElementById('b'+i);
+    const v=inp?inp.value:'—';
+    const ans=READ_ANSWERS['b'+i];
+    const ok=v.toLowerCase().trim()===ans;
+    rows.push(`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.85rem;">
+      <span>Blank (${i})</span>
+      <span style="font-weight:600;color:${v?'var(--text)':'var(--subtext)'}">${v||'— not answered'}</span>
+      ${examSubmitted?`<span style="color:${ok?'var(--success)':'var(--danger)'}">${ok?'✓':'✗ '+ans}</span>`:''}
+    </div>`);
+  }
+  rows.push('<h3 style="margin:18px 0 12px;font-size:0.95rem;">✏️ Grammar & 💬 Vocabulary</h3>');
+  const qNames = ['g1','g2','g3','g4','g5','v1','v2','v3','v4','v5'];
+  const qLabels = ['G1','G2','G3','G4','G5','V1','V2','V3','V4','V5'];
+  qNames.forEach((n,i)=>{
+    const ch=document.querySelector(`[name="${n}"]:checked`);
+    const v=ch?ch.value:'—';
+    const ans=ANSWERS[n];
+    const ok=v===ans;
+    rows.push(`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.85rem;">
+      <span>${qLabels[i]}</span>
+      <span style="font-weight:600;color:${ch?'var(--text)':'var(--subtext)'}">${v}</span>
+      ${examSubmitted?`<span style="color:${ok?'var(--success)':'var(--danger)'}">${ok?'✓':'✗ Correct: '+ans}</span>`:''}
+    </div>`);
+  });
+  rows.push('<h3 style="margin:18px 0 12px;font-size:0.95rem;">📝 Writing Essay</h3>');
+  const essay=document.getElementById('writingArea')?.value?.trim()||'';
+  const wc=essay?essay.split(/\s+/).length:0;
+  rows.push(`<div style="font-size:0.85rem;color:var(--subtext);margin-bottom:8px;">${wc} words written${wc>=80?' ✓':' (need '+Math.max(0,80-wc)+' more)'}</div>`);
+  if(essay) rows.push(`<div style="font-size:0.85rem;font-family:Lora,serif;line-height:1.7;background:var(--card2);padding:14px;border-radius:8px;">${essay}</div>`);
+  else rows.push('<div style="color:var(--subtext);font-size:0.85rem;font-style:italic">No essay written yet.</div>');
+
+  document.getElementById('reviewContent').innerHTML=rows.join('');
+  document.getElementById('reviewOverlay').classList.add('open');
+}
+function closeReview() { document.getElementById('reviewOverlay').classList.remove('open'); }
+function closeAdmin() { document.getElementById('adminOverlay').classList.remove('open'); }
+
+/* ─── THEME ─── */
+function toggleTheme() {
+  const html=document.documentElement;
+  const dark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('themeBtn').textContent=dark?'🌙':'☀️';
+  localStorage.setItem('bacii_theme',dark?'light':'dark');
+}
+(function(){const t=localStorage.getItem('bacii_theme');if(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';}})();
+
+/* ─── MUSIC ─── */
+function toggleMusic() {
+  const btn = document.getElementById('musicBtn');
+  if (!musicPlaying) {
+    try {
+      audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+      playAmbientTone();
+      musicPlaying=true;
+      btn.classList.add('active');
+      btn.textContent='🔊';
+      showToast('🎵 Ambient focus music on');
+    } catch(e) { showToast('⚠️ Audio not supported'); }
+  } else {
+    oscillators.forEach(o=>{ try{o.stop();}catch(e){} });
+    oscillators=[];
+    if(audioCtx) audioCtx.close();
+    musicPlaying=false;
+    btn.classList.remove('active');
+    btn.textContent='🎵';
+    showToast('🔇 Music off');
+  }
+}
+function playAmbientTone() {
+  const freqs = [220,277,330,440];
+  freqs.forEach(freq=>{
+    const osc=audioCtx.createOscillator();
+    const gain=audioCtx.createGain();
+    osc.type='sine';
+    osc.frequency.value=freq;
+    gain.gain.value=0.03;
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    oscillators.push(osc);
+  });
+}
+
+/* ─── TOAST ─── */
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+/* ─── Close overlay on backdrop click ─── */
+document.querySelectorAll('.overlay').forEach(ov=>ov.addEventListener('click',e=>{ if(e.target===ov){ ov.classList.remove('open'); } }));
+</script>
+</body>
+</html>
